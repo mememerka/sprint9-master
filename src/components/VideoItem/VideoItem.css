@@ -1,0 +1,12 @@
+.videoItem {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.videoItem img {
+    max-width: 200px;
+    max-height: 150px ;
+    margin-right: 5px;
+}
