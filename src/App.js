@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Box } from '@mui/system';
 import Searchbar from './components/Searchbar/Searchbar';
 import VideoDetail from './components/VideoDetail/VideoDetail';

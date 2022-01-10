@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react'
+import {useContext } from 'react';
 import './VideoDetail.css';
 import { AppContext } from '../../aplication/Provider';
 import { Box} from '@mui/system';
-import YouTube from 'react-youtube';
+import YouTube from 'react-youtube'; 
 import Typography from '@mui/material/Typography'
 import img from '../img/videoDetailnull.png'
 

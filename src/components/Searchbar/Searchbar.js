@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import './Searchbar.css';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -140,8 +141,8 @@ createUserWithEmailAndPassword(auth, email, password)
       flexFlow: 'row'
     }}>
         <TextField
-          id=""
-          label=""
+          id="search"
+          label="search"
           onChange={handleChange} 
           sx={{
             width: 1000

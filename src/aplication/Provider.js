@@ -1,13 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
 import { createContext, useState } from "react";
 
 export default ({children }) =>{
     const [selectedVideo,setSelectedVideo] = useState('');
-    const [email, setEmail] =  useState('');
-    const [password, setPassword] = useState('');
     return (            
-            <AppContext.Provider value={[[selectedVideo,setSelectedVideo],[email,setEmail],[password,setPassword]]}>
+            <AppContext.Provider value={[selectedVideo,setSelectedVideo]}>
                 {children}
             </AppContext.Provider>  
     );
