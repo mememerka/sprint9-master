@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import './Searchbar.css';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/system';
-import { Modal, Typography } from '@mui/material';
+import { Alert, Modal, Typography } from '@mui/material';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+/* import app from '../../aplication/firebase'; */
+import { AppContext } from '../../aplication/Provider';
 
 
 
 const Searchbar = ({handleFormSubmit}) => {
+  const [setLoggedIn] = useContext(AppContext);
+
   const [term,setTerm] = useState('');
 
   const [modalLogin,setModalLogin] = useState(false);
   const [modalRegistre, setModalRegistre] = useState(false);
 
+  const [registerSucces, setRegisterSucces] = useState(false);
+  const [registerFail, setRegisterFail] = useState(false);
+  const [loginSucces, setLoginSucces] = useState(false);
+  const [loginFail, setLoginFail] = useState(false);
+
+  const [isLogged, setIsLogged] = useState(false);
+
   const [email,setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-/*const [email,setEmail] = useContext(AppContext);
-  const [password, setPassword] = useContext(AppContext);
-  const [emailError,setEmailErorr] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [hasAccount, setHasAccount] = useState(false); */
   
   const handleModalLogin = () => {
     setModalLogin(!modalLogin);
@@ -39,86 +45,84 @@ const Searchbar = ({handleFormSubmit}) => {
     setTerm(e.target.value);
   }
 
-/*   const handleLogin = () =>{
-    clearErrors();
-    app
-      .auth()
-      .signInWithEmailAndPassword(email,password)
-      .catch((err)=>{
-        switch (err.code){
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/user-not-found':
-            setEmailErorr(err.message);
-            break;
-          case 'auth/wrong-password':
-            setPasswordError(err.message);
-            break;
-        };
-      });
-  };
+   const handleEmail = (e) => {
+    setEmail(e.target.value);
+  }
 
-  const handleSignup = () =>{
-    clearErrors();
-    app
-      .auth()
-      .createUserWithEmailAndPassword(email,password)
-      .catch((err)=>{
-        switch (err.code){
-          case 'auth/email-already-in-use':
-          case 'auth/invalid-email':
-            setEmailErorr(err.message);
-            break;
-          case 'auth/weak-password':
-            setPasswordError(err.message);
-            break;
-        };
-      });
-  };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
 
-  const handleLogout = () => {
-    app.auth().signOut();
-  };
-
-  const authListener = () => {
-    app.auth().onAuthStateChanged(email => {
-      if(email){
-        clearInputs();
-        setEmail(email);
-      } else {
-        setEmail('');
-      }
-    });
-  };
-
-  const clearInputs = () => {
+  const resetData = () => {
     setEmail('');
     setPassword('');
-  };
+  }
 
-  const clearErrors = () => {
-    setEmailErorr('');
-    setPasswordError('');
-  };
 
-  useEffect(()=>{
-    authListener();
-  },[]); */
 
-/*   const register = () => {
-    const auth = getAuth();
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
+/*   const succesRegister = () => {
+    return(
+    <Alert severity="success">Compte creat correctament!</Alert>)
+  }; */
+
+/*   const failRegister = () => {
+    return(
+    <Alert severity="error">Compte creat correctament!</Alert>)
   } */
+
+  const register = () => {
+          /* handleAuth(); */
+          const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          setRegisterSucces(true);
+          setRegisterFail(false);
+          setIsLogged(true);
+          setLoggedIn(true);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setRegisterFail(true);
+          setRegisterSucces(false);
+          // ..
+        });
+        resetData();
+  };
+
+  const singIn = () => {
+          const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          setLoginSucces(true);
+          setLoginFail(false);
+          setIsLogged(true);
+          setLoggedIn(true);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setLoginFail(true);
+          setLoginSucces(false);
+        });
+  }
+
+  const logOut = () => {
+        const auth = getAuth();
+    signOut(auth).then(() => {
+      setIsLogged(false);
+      setLoggedIn(false);
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+});
+}
 
 
   const modalStyle = {
@@ -167,25 +171,27 @@ createUserWithEmailAndPassword(auth, email, password)
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
+              {loginSucces && <Alert severity="success">Sessió iniciada correctament</Alert>}
+              {loginFail && <Alert severity="error">No s'ha pogut iniciar sessió</Alert>} 
               <Box sx={{
               display: 'flex',
               flexFlow: 'column'
               }}>
                 <TextField
-                  id=""
+                  id="email"
                   label="Email"
-                  onChange={(e)=>setEmail(e.target.value)}
+                  onChange={handleEmail}
                   sx={{
                     mb:2,
                     mt:2
                   }}
                 />
                 <TextField
-                  id=""
+                  id="contrasenya"
                   label="Contrasenya"
-                  onChange={(e)=>setPassword(e.target.value)}              
+                  onChange={handlePassword}           
                 />
-                <Button variant="contained" color="error" onClick={(console.log(email+ '' +password))} sx={{
+                <Button variant="contained" color="error" onClick={singIn} sx={{
                   mt: 3
                 }}>
                   Submit
@@ -208,6 +214,8 @@ createUserWithEmailAndPassword(auth, email, password)
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
+             {registerSucces && <Alert severity="success">Compte creat correctament!</Alert>}
+             {registerFail && <Alert severity="error">No s'ha pogut crear el compte</Alert>} 
               <Box sx={{
               display: 'flex',
               flexFlow: 'column'
@@ -215,7 +223,7 @@ createUserWithEmailAndPassword(auth, email, password)
                 <TextField
                   id=""
                   label="Usuari"
-                  onChange={(e)=>setEmail(e.target.value)}
+                  onChange={handleEmail}
                   sx={{
                     mb:2,
                     mt:2
@@ -224,9 +232,9 @@ createUserWithEmailAndPassword(auth, email, password)
                 <TextField
                   id=""
                   label="Contrasenya"
-                  onChange={(e)=>setPassword(e.target.value)}             
+                  onChange={handlePassword}          
                 />
-                <Button variant="contained" color="error" /* onClick={register()} */ sx={{
+                <Button variant="contained" color="error" onClick={register}  sx={{
                   mt: 3
                 }}>
                   Submit
@@ -234,10 +242,10 @@ createUserWithEmailAndPassword(auth, email, password)
               </Box>
             </Box>
           </Modal>
-
-
+          <Button onClick={logOut} variant="contained" color="error">Log Out</Button>
+          {isLogged && <Alert severity="success">Compte creat correctament!</Alert>}
     </Box>
   );
-}
+};
 
 export default Searchbar;
