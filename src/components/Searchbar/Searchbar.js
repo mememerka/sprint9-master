@@ -172,7 +172,8 @@ const Searchbar = ({handleFormSubmit}) => {
                 <TextField
                   id="contrasenya"
                   label="Contrasenya"
-                  onChange={handlePassword}           
+                  onChange={handlePassword}
+                  type="password"        
                 />
                 <Button variant="contained" color="error" onClick={singIn} sx={{
                   mt: 3
@@ -216,6 +217,7 @@ const Searchbar = ({handleFormSubmit}) => {
                 <TextField
                   id=""
                   label="Contrasenya"
+                  type="password" 
                   onChange={handlePassword}          
                 />
                 <Button variant="contained" color="error" onClick={register}  sx={{
