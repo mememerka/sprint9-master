@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box } from '@mui/system';
 import Searchbar from './components/Searchbar/Searchbar';
 import VideoDetail from './components/VideoDetail/VideoDetail';
@@ -8,10 +8,11 @@ import { useState } from 'react';
 import Provider from './aplication/Provider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import img from './components/img/videoDetailnull.png'; 
-
+import CommentSection from './components/CommentSection/CommentSection';
+import { Container } from '@mui/material';
 
 function App() {
-  const [videos,setVideos] = useState([]); 
+  const [videos,setVideos] = useState([]);
 
   const handleSubmit = async (term) => {
     console.log('app',term) 
@@ -27,44 +28,47 @@ function App() {
   return (
     <BrowserRouter>
      <Provider>
-      <Box sx={{
-        mt:5,
-        ml: 5,
-        display: 'flex',
-        flexFlow: 'row',
-        flexWrap: 'wrap',
-      }}>
+       <Container>
         <Box sx={{
-          width: 1200
-        }}> 
-          <Searchbar handleFormSubmit={handleSubmit}/>
-        </Box>
-        <Box sx={{
+          mt:5,
+          ml: 5,
           display: 'flex',
+          flexFlow: 'row',
+          flexWrap: 'wrap',
         }}>
           <Box sx={{
-            width: 700,
-            mt: 5,
-            ml: 5,
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-              <Routes>
-                <Route exact path='/' element={<div>
-                                                <img src={img} alt=''/>
-                                              </div>}/>
-                <Route path='/videodetail' element={<VideoDetail/>}/>
-                <Route path='*' element={<div>404</div> }/>
-              </Routes>
+            width: 1200
+          }}> 
+            <Searchbar handleFormSubmit={handleSubmit}/>
           </Box>
           <Box sx={{
-            mt: 5,
-            ml: 10,
+            display: 'flex',
           }}>
-            <VideoList videos={videos}/>
+            <Box sx={{
+              width: 700,
+              mt: 5,
+              ml: 5,
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+                <Routes>
+                  <Route exact path='/' element={<div>
+                                                  <img src={img} alt=''/>
+                                                </div>}/>
+                  <Route path='/videodetail' element={<VideoDetail/>}/>
+                  <Route path='*' element={<div>404</div> }/>
+                </Routes>
+            </Box>
+            <Box sx={{
+              mt: 5,
+              ml: 10,
+            }}>
+              <VideoList videos={videos}/>
+            </Box>
           </Box>
+          <CommentSection/>
         </Box>
-      </Box>
+      </Container>
     </Provider>
   </BrowserRouter>
   );

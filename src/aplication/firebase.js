@@ -1,13 +1,5 @@
-// Import the functions you need from the SDKs you need
-import React from 'react'
-import ReactDOM from 'react-dom'
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
  const firebaseConfig = {
   apiKey: "AIzaSyD1wpRC804MaeqqiWNdaxgiL8BT3bB2fTM",
   authDomain: "reacttube-d37e2.firebaseapp.com",
@@ -18,7 +10,6 @@ import { initializeApp } from "firebase/app";
   measurementId: "G-7LHXMMXC7Y"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 export default app;

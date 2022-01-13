@@ -4,27 +4,21 @@ import './Searchbar.css';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/system';
-import { Alert, Modal, Typography } from '@mui/material';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-/* import app from '../../aplication/firebase'; */
+import { Alert, Container, Modal, Typography } from '@mui/material';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { AppContext } from '../../aplication/Provider';
+import { Link } from 'react-router-dom';
 
 
 
 const Searchbar = ({handleFormSubmit}) => {
-  const [setLoggedIn] = useContext(AppContext);
 
   const [term,setTerm] = useState('');
 
   const [modalLogin,setModalLogin] = useState(false);
   const [modalRegistre, setModalRegistre] = useState(false);
 
-  const [registerSucces, setRegisterSucces] = useState(false);
-  const [registerFail, setRegisterFail] = useState(false);
-  const [loginSucces, setLoginSucces] = useState(false);
-  const [loginFail, setLoginFail] = useState(false);
-
-  const [isLogged, setIsLogged] = useState(false);
+  const [currentUser, setCurrentUser] = useContext(AppContext);
 
   const [email,setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,71 +53,44 @@ const Searchbar = ({handleFormSubmit}) => {
   }
 
 
-
-/*   const succesRegister = () => {
-    return(
-    <Alert severity="success">Compte creat correctament!</Alert>)
-  }; */
-
-/*   const failRegister = () => {
-    return(
-    <Alert severity="error">Compte creat correctament!</Alert>)
-  } */
-
   const register = () => {
-          /* handleAuth(); */
+          setCurrentUser('');
           const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
-          setRegisterSucces(true);
-          setRegisterFail(false);
-          setIsLogged(true);
-          setLoggedIn(true);
-          // ...
+          setCurrentUser(user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setRegisterFail(true);
-          setRegisterSucces(false);
-          // ..
         });
         resetData();
   };
 
   const singIn = () => {
           const auth = getAuth();
+      setPersistence(auth, browserSessionPersistence)
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
-          setLoginSucces(true);
-          setLoginFail(false);
-          setIsLogged(true);
-          setLoggedIn(true);
-          // ...
+          setCurrentUser(user);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setLoginFail(true);
-          setLoginSucces(false);
         });
+        resetData();
   }
 
   const logOut = () => {
         const auth = getAuth();
     signOut(auth).then(() => {
-      setIsLogged(false);
-      setLoggedIn(false);
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
+      setCurrentUser('');
+    })
+    .catch((error) => {
 });
 }
-
 
   const modalStyle = {
     position: 'absolute',
@@ -137,27 +104,42 @@ const Searchbar = ({handleFormSubmit}) => {
     p: 4,
   };
 
+  const buttonStyled = {
+    height: 37,
+    m: 1,
+    width: '75%' 
+  }
 
  return(
-   
+   <Container>
     <Box sx={{
       display: 'flex',
-      flexFlow: 'row'
+      flexFlow: 'row',
+      alignItems: 'center'
     }}>
         <TextField
           id="search"
           label="search"
           onChange={handleChange} 
           sx={{
-            width: 1000
+            width: {
+              xs: 600, 
+              sm: 700, 
+              md: 800, 
+              lg: 900,
+              xl: 1000
+            }
           }}
         />
+        <Link to='/'style={{ textDecoration: 'none' }}>
         <Button variant="contained" color="error" onClick={handleSubmit} sx={{
-          ml: 3
-        }}>
+          ml: 2,
+          height:37}}>
           SEARCH
         </Button>
-        <Button onClick={handleModalLogin} variant="contained" color="error">Login</Button>
+        </Link>
+        <Box sx={{ml:4}}>
+        <Button onClick={handleModalLogin} variant="contained" color="error" size="large" sx={buttonStyled}>Login</Button>
           <Modal
             open={modalLogin}
             onClose={handleModalLogin}
@@ -171,8 +153,9 @@ const Searchbar = ({handleFormSubmit}) => {
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
-              {loginSucces && <Alert severity="success">Sessió iniciada correctament</Alert>}
-              {loginFail && <Alert severity="error">No s'ha pogut iniciar sessió</Alert>} 
+
+              {currentUser && <Alert severity="success">Sessió iniciada correctament</Alert>}
+
               <Box sx={{
               display: 'flex',
               flexFlow: 'column'
@@ -200,7 +183,7 @@ const Searchbar = ({handleFormSubmit}) => {
             </Box>
           </Modal>
 
-          <Button onClick={handleModalRegistre} variant="contained" color="error">Registre</Button>
+          <Button onClick={handleModalRegistre} variant="contained" color="error" size="large" sx={buttonStyled}>Registre</Button>
           <Modal
             open={modalRegistre}
             onClose={handleModalRegistre}
@@ -214,8 +197,9 @@ const Searchbar = ({handleFormSubmit}) => {
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
-             {registerSucces && <Alert severity="success">Compte creat correctament!</Alert>}
-             {registerFail && <Alert severity="error">No s'ha pogut crear el compte</Alert>} 
+
+              {currentUser && <Alert severity="success">Compte creat correctament!</Alert>}
+
               <Box sx={{
               display: 'flex',
               flexFlow: 'column'
@@ -242,9 +226,10 @@ const Searchbar = ({handleFormSubmit}) => {
               </Box>
             </Box>
           </Modal>
-          <Button onClick={logOut} variant="contained" color="error">Log Out</Button>
-          {isLogged && <Alert severity="success">Compte creat correctament!</Alert>}
+          {currentUser && <Button onClick={logOut} variant="contained" color="error" sx={buttonStyled}>Log Out</Button>}
+          </Box>
     </Box>
+  </Container>
   );
 };
 

@@ -24,23 +24,23 @@ const VideoDetail = () => {
     <img src={img} alt=''/>
     </Box>)}
   return (
-  <Box sx={{
-    ml: 5,
-  }}>
-      <YouTube videoId={selectedVideo.id.videoId} opts={opts}/>
-      <Box>
-        <Typography variant="h6" color="initial" sx={{
-          mb: 1,
-          mt: 3,
-        }}>
-          {selectedVideo.snippet.title}
-        </Typography>
-        
-          <Typography variant="body1" color="initial">
-            {selectedVideo.snippet.description}
-          </Typography>
+      <Box sx={{
+        ml: 5,
+      }}>
+          <YouTube videoId={selectedVideo.id.videoId} opts={opts}/>
+          <Box>
+            <Typography variant="h6" color="initial" sx={{
+              mb: 1,
+              mt: 3,
+            }}>
+              {selectedVideo.snippet.title}
+            </Typography>
+            
+              <Typography variant="body1" color="initial">
+                {selectedVideo.snippet.description}
+              </Typography>
+          </Box>
       </Box>
-  </Box>
 )};
 
 export default VideoDetail;

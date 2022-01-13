@@ -9,11 +9,16 @@ import { Link } from 'react-router-dom';
 
 const VideoItem = ({video}) => {
   const [selectedVideo,setSelectedVideo] = useContext(AppContext);
+  
+  const selectVideo = () => {
+    setSelectedVideo(video);
+  };
+
   console.log(selectedVideo);
   return(
     <Link to='/videodetail'>
     <div className='videoItem'>
-      <ButtonBase onClick={()=>setSelectedVideo(video)}>
+      <ButtonBase onClick={selectVideo}>
         <Box sx={{
           display: 'flex',
           flexFlow: 'row',
