@@ -2,7 +2,7 @@ import React from 'react';
 import { createContext, useState } from "react";
 import app from './firebase';
 
-export default ({children }) => {
+export default ({children}) => {
 
     const [selectedVideo,setSelectedVideo] = useState('');
     const [currentUser, setCurrentUser] = useState(); 
@@ -12,6 +12,6 @@ export default ({children }) => {
                 {children}
             </AppContext.Provider>  
     );
-}
+};
 
 export const AppContext = createContext();

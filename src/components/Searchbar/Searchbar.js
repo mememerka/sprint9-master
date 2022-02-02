@@ -19,6 +19,8 @@ const Searchbar = ({handleFormSubmit}) => {
 
   const [email,setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [selectedVideo] = useContext(AppContext);
   
   const handleModalLogin = () => {
     setModalLogin(!modalLogin);
@@ -65,6 +67,7 @@ const Searchbar = ({handleFormSubmit}) => {
   };
 
   const singIn = () => {
+    console.log(selectedVideo);
           const auth = getAuth();
       setPersistence(auth, browserSessionPersistence)
       signInWithEmailAndPassword(auth, email, password)

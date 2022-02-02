@@ -10,8 +10,8 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import CommentSection from './components/CommentSection/CommentSection';
 import { Container, Button } from '@mui/material';
 import PrivateRoute from './components/CommentSection/commentprivate';
-import './App.css'
 import NotLogged from './components/NotLogged/NotLogged';
+import img from './img/videoDetailnull.png'
 
 function App() {
   const [videos,setVideos] = useState([]);
@@ -53,8 +53,10 @@ function App() {
 
   const styledCommentsBox = {
     display: 'flex',
-    justifyContent: 'center',
-    mt: 5
+    justifyContent: 'flex-start',
+    mt: 5,
+    ml: 12,
+    pb: 10
   }
 
   return (
@@ -70,6 +72,18 @@ function App() {
           <Box sx={styledDetailMainBox}>
             <Box sx={styledDetailBox}>
               <VideoDetail/>
+              {/* <Routes>
+                  <Route exact path='/' element={<div>
+                                                    <img style={{
+                                                        resizeMode: "contain",
+                                                        height: 450,
+                                                        width: 699
+                                                        }} 
+                                                      src={img} alt=''/>
+                                                </div>}/>
+                  <Route path='/videodetail' element={<VideoDetail/>}/>
+                  <Route path='*' element={<div>404</div> }/>
+                </Routes> */}
             </Box>
             <Box>
               <VideoList videos={videos}/>
@@ -78,11 +92,11 @@ function App() {
         </Box>
         <Box sx={styledCommentsBox}>
         <Routes>
-              <Route element={<PrivateRoute/>}>
-                <Route path='/comments' element={<CommentSection/>}/>
+          <Route element={<PrivateRoute/>}>
+              <Route path='/comments' element={<CommentSection/>}/>
               </Route>
-              <Route path='/notLogged' element={<NotLogged/>}/>
-            </Routes>
+          <Route path='/notLogged' element={<NotLogged/>}/>
+        </Routes>
             <Link to='/comments' style={{ textDecoration: 'none' }}>
               {
               button && 

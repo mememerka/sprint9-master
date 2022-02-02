@@ -5,12 +5,6 @@ import { Box} from '@mui/system';
 import YouTube from 'react-youtube'; 
 import Typography from '@mui/material/Typography'
 import img from './img/videoDetailnull.png' 
-import { Paper } from '@mui/material';
-
-const styledPaper = {
-  width: 6,
-  height: 4
-};
 
 const styledBox = {
   ml: 5
@@ -30,27 +24,56 @@ const VideoDetail = () => {
       autoplay: 1,
     },
   };
-  if (!selectedVideo){
+ /* if (!selectedVideo){
     return(
      <Box sx={{width: 680, height: 460}}>
     <Paper elevation={0} sx={styledPaper}>
-    <img src={img} alt=''/>
+    <img style={{
+            resizeMode: "contain",
+            height: 450,
+            width: 699
+          }} 
+          src={img} alt=''/>
     </Paper>
     </Box>
-    )}; 
+    )};  */
 
+     
+    /* const videoPlayer =  <Box sx={styledBox}>
+                            <YouTube videoId={selectedVideo.id.videoId} opts={opts}/>
+                            <Box>
+                              <Typography variant="h6" color="initial" sx={styledTypo}>
+                                {selectedVideo.snippet.title}
+                              </Typography>
+                                <Typography variant="body1" color="initial">
+                                  {selectedVideo.snippet.description}
+                                </Typography>
+                            </Box>
+                        </Box>; */
+
+    const youtubeLogo = <Box>
+                          <img style={{
+                                  resizeMode: "contain",
+                                  height: 450,
+                                  width: 699
+                                }} 
+                                src={img} alt=''/>
+                        </Box>
+                              
   return (
+      selectedVideo ? 
       <Box sx={styledBox}>
-          <YouTube videoId={selectedVideo.id.videoId} opts={opts}/>
-          <Box>
-            <Typography variant="h6" color="initial" sx={styledTypo}>
-              {selectedVideo.snippet.title}
-            </Typography>
-              <Typography variant="body1" color="initial">
-                {selectedVideo.snippet.description}
-              </Typography>
-          </Box>
+      <YouTube videoId={selectedVideo.id.videoId} opts={opts}/>
+      <Box>
+        <Typography variant="h6" color="initial" sx={styledTypo}>
+          {selectedVideo.snippet.title}
+        </Typography>
+          <Typography variant="body1" color="initial">
+            {selectedVideo.snippet.description}
+          </Typography>
       </Box>
+  </Box> 
+  : youtubeLogo
 )};
 
 export default VideoDetail;
