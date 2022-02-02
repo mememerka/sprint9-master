@@ -1,13 +1,9 @@
-import { Box, TextField, Button, Alert, Container } from '@mui/material';
-import React, { useContext, useState } from 'react';
-import { AppContext } from '../../aplication/Provider';
-import './CommentSection.css';
+import { Box, TextField, Button} from '@mui/material';
+import React, { useState } from 'react';
 
 const CommentSection = () => {
   const [comment, setComment] = useState('');
   const [commentSection, setCommentSection] = useState([]);
- 
-  const [currentUser] = useContext(AppContext);
 
   const handleChange = (e) => {
     setComment(e.target.value);
@@ -18,7 +14,7 @@ const CommentSection = () => {
     setComment('');
   };
 
-  const styleBox = {
+  const styledComments = {
     display: 'flex',
     flexFlow: 'column',
     border: 1,
@@ -28,47 +24,42 @@ const CommentSection = () => {
     p: 2,
   };
 
-  const styleBoxError = {
-    mb: 2,
-    mt: 5,
-    p: 2,
-    width: 750
+  const styledFullCommentSection = {
+    ml: 3
+  };
+
+  const styledCommentSection = {
+      ml: 3,
+      display: 'flex',
+      flexFlow: 'column',
+      alignItems: 'center',
   };
 
   const textFieldStyled = {
     width:750,
     mt: 3,
     mr: 2
+  };
+
+  const styledSubmit = {
+    mt: 2
   }
 
-  const renderedComments = commentSection.map((item)=> <Box sx={styleBox}>{item}</Box>);
+  const renderedComments = commentSection.map((item)=> <Box sx={styledComments}>{item}</Box>);
 
-  const fullCommentSection = <Box sx={{ml: 3}}>
+  const fullCommentSection = <Box sx={styledFullCommentSection}>
                                   {renderedComments}
-                                <Box sx={{
-                                  ml: 3,
-                                  display: 'flex',
-                                  flexFlow: 'column',
-                                  alignItems: 'center',
-                                }}>
+                                <Box sx={styledCommentSection}>
                                   <TextField onChange={handleChange} multiline value={comment} sx={textFieldStyled}/>
-                                    <Button variant="contained" color="primary" onClick={submmitComment} sx={{
-                                        mt: 2
-                                      }}>
+                                    <Button variant="contained" color="primary" onClick={submmitComment} sx={styledSubmit}>
                                         Submit
                                     </Button>
                                 </Box>
                               </Box>
-
-  const notLogged = <Box sx={styleBoxError}>
-                      <Alert severity="error">Inicia Sessió per veure els comentaris</Alert>
-                    </Box>
                         
-return (<Container>
-          {currentUser
-          ? fullCommentSection 
-          : notLogged}
-        </Container>
+return ( 
+  fullCommentSection
 )};
 
 export default CommentSection;
+

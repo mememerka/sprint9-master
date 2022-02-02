@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
-import './Searchbar.css';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Box } from '@mui/system';
 import { Alert, Container, Modal, Typography } from '@mui/material';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { AppContext } from '../../aplication/Provider';
-import { Link } from 'react-router-dom';
-
 
 
 const Searchbar = ({handleFormSubmit}) => {
@@ -52,7 +49,6 @@ const Searchbar = ({handleFormSubmit}) => {
     setPassword('');
   }
 
-
   const register = () => {
           setCurrentUser('');
           const auth = getAuth();
@@ -92,6 +88,27 @@ const Searchbar = ({handleFormSubmit}) => {
 });
 }
 
+  const styledMainBox = {
+    display: 'flex',
+    flexFlow: 'row',
+    alignItems: 'center'
+  };
+
+  const styledSearchField = {
+    width: {
+      xs: 600, 
+      sm: 700, 
+      md: 800, 
+      lg: 900,
+      xl: 1000
+    }
+  };
+
+  const styledSearchButton = {
+    ml: 2,
+    height:37
+  };
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -104,41 +121,43 @@ const Searchbar = ({handleFormSubmit}) => {
     p: 4,
   };
 
+  const styledButtonsBox = {
+    ml:4
+  };
+
   const buttonStyled = {
     height: 37,
     m: 1,
     width: '75%' 
-  }
+  };
+
+  const styledFormBox = {
+    display: 'flex',
+    flexFlow: 'column'
+  };
+
+  const styledInputField = {
+    mb:2,
+    mt:2
+  };
+
+  const styledSubmitButton = {
+    mt: 3
+  };
 
  return(
    <Container>
-    <Box sx={{
-      display: 'flex',
-      flexFlow: 'row',
-      alignItems: 'center'
-    }}>
+    <Box sx={styledMainBox}>
         <TextField
           id="search"
           label="search"
           onChange={handleChange} 
-          sx={{
-            width: {
-              xs: 600, 
-              sm: 700, 
-              md: 800, 
-              lg: 900,
-              xl: 1000
-            }
-          }}
+          sx={styledSearchField}
         />
-        <Link to='/'style={{ textDecoration: 'none' }}>
-        <Button variant="contained" color="error" onClick={handleSubmit} sx={{
-          ml: 2,
-          height:37}}>
+        <Button variant="contained" color="error" onClick={handleSubmit} sx={styledSearchButton}>
           SEARCH
         </Button>
-        </Link>
-        <Box sx={{ml:4}}>
+        <Box sx={styledButtonsBox}>
         <Button onClick={handleModalLogin} variant="contained" color="error" size="large" sx={buttonStyled}>Login</Button>
           <Modal
             open={modalLogin}
@@ -156,18 +175,12 @@ const Searchbar = ({handleFormSubmit}) => {
 
               {currentUser && <Alert severity="success">Sessió iniciada correctament</Alert>}
 
-              <Box sx={{
-              display: 'flex',
-              flexFlow: 'column'
-              }}>
+              <Box sx={styledFormBox}>
                 <TextField
                   id="email"
                   label="Email"
                   onChange={handleEmail}
-                  sx={{
-                    mb:2,
-                    mt:2
-                  }}
+                  sx={styledInputField}
                 />
                 <TextField
                   id="contrasenya"
@@ -175,9 +188,7 @@ const Searchbar = ({handleFormSubmit}) => {
                   onChange={handlePassword}
                   type="password"        
                 />
-                <Button variant="contained" color="error" onClick={singIn} sx={{
-                  mt: 3
-                }}>
+                <Button variant="contained" color="error" onClick={singIn} sx={styledSubmitButton}>
                   Submit
                 </Button>
               </Box>
@@ -201,28 +212,20 @@ const Searchbar = ({handleFormSubmit}) => {
 
               {currentUser && <Alert severity="success">Compte creat correctament!</Alert>}
 
-              <Box sx={{
-              display: 'flex',
-              flexFlow: 'column'
-              }}>
+              <Box sx={styledFormBox}>
                 <TextField
                   id=""
                   label="Usuari"
                   onChange={handleEmail}
-                  sx={{
-                    mb:2,
-                    mt:2
-                  }}
+                  sx={styledInputField}
                 />
                 <TextField
-                  id=""
-                  label="Contrasenya"
+                  id="User"
+                  label="Password"
                   type="password" 
                   onChange={handlePassword}          
                 />
-                <Button variant="contained" color="error" onClick={register}  sx={{
-                  mt: 3
-                }}>
+                <Button variant="contained" color="error" onClick={register}  sx={styledSubmitButton}>
                   Submit
                 </Button>
               </Box>
