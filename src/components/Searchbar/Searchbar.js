@@ -62,6 +62,19 @@ const Searchbar = ({handleFormSubmit}) => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          if (errorCode === 'auth/email-already-exists'){
+            console.log('Otro usuario ya está utilizando el correo electrónico proporcionado. Cada usuario debe tener un correo electrónico único.');
+
+          };
+          if (errorCode === 'auth/invalid-email'){
+            console.log('El valor que se proporcionó para la propiedad del usuario email no es válido. Debe ser una dirección de correo electrónico de string.');
+          };
+          if (errorCode === 'auth/invalid-password'){
+            console.log('El valor que se proporcionó para la propiedad del usuario password no es válido. Debe ser una string con al menos seis caracteres.');
+          };
+          if(errorCode !== 'auth/email-already-exists' || 'auth/invalid-email' || 'auth/invalid-password'){
+            console.log(errorMessage);
+          };
         });
         resetData();
   };
@@ -78,6 +91,11 @@ const Searchbar = ({handleFormSubmit}) => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          if (errorCode === 'auth/user-not-found'){
+            console.log('No existe ningún registro de usuario que corresponda al identificador proporcionado.');
+          }else{
+            console.log(errorMessage);
+          }
         });
         resetData();
   }

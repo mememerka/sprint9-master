@@ -4,7 +4,7 @@ import { AppContext } from '../../aplication/Provider';
 import { Box} from '@mui/system';
 import YouTube from 'react-youtube'; 
 import Typography from '@mui/material/Typography'
-import img from './img/videoDetailnull.png' 
+import img from './img/videoDetailnull.png'
 
 const styledBox = {
   ml: 5
