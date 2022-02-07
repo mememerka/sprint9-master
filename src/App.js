@@ -11,7 +11,6 @@ import CommentSection from './components/CommentSection/CommentSection';
 import { Container, Button } from '@mui/material';
 import PrivateRoute from './components/CommentSection/commentprivate';
 import NotLogged from './components/NotLogged/NotLogged';
-import img from './img/videoDetailnull.png'
 
 function App() {
   const [videos,setVideos] = useState([]);
@@ -72,18 +71,6 @@ function App() {
           <Box sx={styledDetailMainBox}>
             <Box sx={styledDetailBox}>
               <VideoDetail/>
-              {/* <Routes>
-                  <Route exact path='/' element={<div>
-                                                    <img style={{
-                                                        resizeMode: "contain",
-                                                        height: 450,
-                                                        width: 699
-                                                        }} 
-                                                      src={img} alt=''/>
-                                                </div>}/>
-                  <Route path='/videodetail' element={<VideoDetail/>}/>
-                  <Route path='*' element={<div>404</div> }/>
-                </Routes> */}
             </Box>
             <Box>
               <VideoList videos={videos}/>

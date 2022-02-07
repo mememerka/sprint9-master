@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -20,36 +20,37 @@ const Searchbar = ({handleFormSubmit}) => {
   const [email,setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [selectedVideo] = useContext(AppContext);
+  const [errorCode, setErrorCode] = useState('');
   
   const handleModalLogin = () => {
     setModalLogin(!modalLogin);
-  }
+  };
 
   const handleModalRegistre = () => {
     setModalRegistre(!modalRegistre);
-  }
+  };
 
   const handleSubmit = () => {
     handleFormSubmit(term);
-  }
+  };
 
   const handleChange = (e) =>{
     setTerm(e.target.value);
-  }
+  };
 
    const handleEmail = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
   const resetData = () => {
     setEmail('');
     setPassword('');
-  }
+    setErrorCode('');
+  };
 
   const register = () => {
           setCurrentUser('');
@@ -63,24 +64,22 @@ const Searchbar = ({handleFormSubmit}) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           if (errorCode === 'auth/email-already-exists'){
-            console.log('Otro usuario ya está utilizando el correo electrónico proporcionado. Cada usuario debe tener un correo electrónico único.');
-
+            setErrorCode('Otro usuario ya está utilizando el correo electrónico proporcionado. Cada usuario debe tener un correo electrónico único.');
           };
           if (errorCode === 'auth/invalid-email'){
-            console.log('El valor que se proporcionó para la propiedad del usuario email no es válido. Debe ser una dirección de correo electrónico de string.');
+            setErrorCode('El valor que se proporcionó para la propiedad del usuario email no es válido. Debe ser una dirección de correo electrónico de string.');
           };
           if (errorCode === 'auth/invalid-password'){
-            console.log('El valor que se proporcionó para la propiedad del usuario password no es válido. Debe ser una string con al menos seis caracteres.');
+            setErrorCode('El valor que se proporcionó para la propiedad del usuario password no es válido. Debe ser una string con al menos seis caracteres.');
           };
           if(errorCode !== 'auth/email-already-exists' || 'auth/invalid-email' || 'auth/invalid-password'){
-            console.log(errorMessage);
+            setErrorCode(errorMessage);
           };
         });
         resetData();
   };
 
   const singIn = () => {
-    console.log(selectedVideo);
           const auth = getAuth();
       setPersistence(auth, browserSessionPersistence)
       signInWithEmailAndPassword(auth, email, password)
@@ -92,13 +91,13 @@ const Searchbar = ({handleFormSubmit}) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           if (errorCode === 'auth/user-not-found'){
-            console.log('No existe ningún registro de usuario que corresponda al identificador proporcionado.');
+            setErrorCode('No existe ningún registro de usuario que corresponda al identificador proporcionado.');
           }else{
-            console.log(errorMessage);
+            setErrorCode(errorMessage);
           }
         });
         resetData();
-  }
+  };
 
   const logOut = () => {
         const auth = getAuth();
@@ -107,7 +106,7 @@ const Searchbar = ({handleFormSubmit}) => {
     })
     .catch((error) => {
 });
-}
+};
 
   const styledMainBox = {
     display: 'flex',
@@ -194,7 +193,9 @@ const Searchbar = ({handleFormSubmit}) => {
                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
               </Typography>
 
-              {currentUser && <Alert severity="success">Sessió iniciada correctament</Alert>}
+              {errorCode ? <Alert severity="error">{errorCode}</Alert> : 
+              currentUser && <Alert severity="success">Sessió iniciada correctament</Alert>}
+
 
               <Box sx={styledFormBox}>
                 <TextField
